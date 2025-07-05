@@ -7,7 +7,6 @@ import { Activity } from "lucide-react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/store/UserAuthProvider";
-import { UploadReport } from "@/actions/ReportAction";
 
 const HomePage = () => {
   const router = useRouter();
@@ -82,17 +81,31 @@ const HomePage = () => {
       formData.append("name", name);
       formData.append("userId", user.id);
 
-      const response = await UploadReport(formData);
-      if (!response) {
-        setError("Failed to process the report. Please try again.");
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("No auth token found. Please log in again.");
         return;
       }
-      console.log("respojnse ",response)
+
+      const response = await fetch("/api/reports/upload", {
+        method: "POST",
+        headers: {
+         token
+        },
+        body: formData,
+      });
+
+      const resData = await response.json();
+      console.log("response", resData);
+
+      if (!resData.success) {
+        setError(resData.message || "Failed to process the report. Please try again.");
+        return;
+      }
+
     } catch (err) {
       console.error("Error in handleUpload:", err);
-      setError(
-        err instanceof Error ? err.message : "Unexpected error occurred."
-      );
+      setError(err instanceof Error ? err.message : "Unexpected error occurred.");
     } finally {
       setIsUploading(false);
     }

@@ -50,9 +50,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         method: "GET",
         headers: { token },
       });
-      const user = await res.json();
-      if (user) {
-        setUser(user);
+      const data = await res.json();
+      if (data.success) {
+        setUser(data.user);
       } else {
         logout();
       }

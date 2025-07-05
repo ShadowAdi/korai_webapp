@@ -1,7 +1,7 @@
 "use client";
 import { ParametersResponse, ReportResponse } from "@/types/Types";
 import { useRouter } from "next/router";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Search,
   FileText,
@@ -17,12 +17,10 @@ import {
   getStatusColor,
 } from "@/utils/Dashboard";
 import { useUser } from "@/store/UserAuthProvider";
-import { fetchUserByToken } from "@/actions/UserAction";
-import { GetAllReports } from "@/actions/ReportAction";
 
 const DashboardClient = () => {
   const router = useRouter();
-   const { getToken } = useUser();
+  const { getToken } = useUser();
   const [reports, setReports] = useState<ReportResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,13 +42,13 @@ const DashboardClient = () => {
           setError("Please log in.");
           return;
         }
-        const user = await fetchUserByToken(token);
-        if (!user?.id) {
-          setError("User not found.");
-          return;
-        }
-        const res = await GetAllReports(user.id);
-        setReports(res.reports || []);
+        const res = await fetch(`/api/report/getAll`, {
+          headers: {
+            token,
+          },
+        });
+        const data = await res.json();
+        setReports(data.reports || []);
       } catch (err) {
         console.error(err);
         setError("Failed to load reports.");
@@ -60,9 +58,6 @@ const DashboardClient = () => {
     };
     loadReports();
   }, []);
-
-  
-
 
   const handleReportClick = (report: ReportResponse): void => {
     setSelectedReport(report);

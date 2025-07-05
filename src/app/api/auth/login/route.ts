@@ -9,6 +9,7 @@ const JWT_EXPIRES_IN = "7d";
 export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
+    console.log("email ",email)
     if (!email || !password) {
       return NextResponse.json(
         { success: false, message: "Data Not Provided." },

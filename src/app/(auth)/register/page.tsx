@@ -153,7 +153,7 @@ const Register = () => {
 
           <Button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700"
+            className="w-full bg-indigo-600 cursor-pointer hover:bg-indigo-700"
           >
             Create Account
           </Button>

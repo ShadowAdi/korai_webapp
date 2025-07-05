@@ -47,9 +47,9 @@ const Login = () => {
 
       if (resData.success) {
         if (resData.token) {
-          toast.error("Login Successfull");
-          localStorage.setItem("token", resData.token);
           router.push("/home");
+          toast.success("Login Successfull");
+          localStorage.setItem("token", resData.token);
         } else {
           console.log("Token is not there");
           toast.error("Login succeeded, but token missing!");

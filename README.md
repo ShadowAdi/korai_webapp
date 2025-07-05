@@ -83,3 +83,5 @@ Practical problem solving
 Modern full-stack development (frontend + backend)
 
 Clean code, security, and good UX
+
+# **Images are in the *demo* folder**

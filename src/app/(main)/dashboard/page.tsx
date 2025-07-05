@@ -96,7 +96,7 @@ export default function Dashboard() {
   }, [reports]);
 
   return (
-    <div className=" bg-gray-50">
+    <div className=" bg-gray-50 w-full">
       {globalLoading || loading ? (
         <div className="flex flex-col items-center justify-center py-20">
           <BounceLoader color="#6d22e7" />
@@ -118,7 +118,7 @@ export default function Dashboard() {
         </div>
       ) : (
         <>
-          <div className="bg-white min-h-screen shadow-sm border-b">
+          <div className="bg-white shadow-sm border-b">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between items-center py-6">
                 <div>
@@ -231,7 +231,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1   lg:grid-cols-3 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                   <div className="p-6 border-b border-gray-200">
@@ -380,8 +380,8 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-            <div className="flex flex-col space-y-1 items-center my-4 mt-8">
-              <div className="flex flex-wrap gap-2">
+            <div className="flex flex-col space-y-1 w-full  items-center my-4 mt-8">
+              <div className="flex flex-wrap  gap-2">
                 {availableParameters.map((name) => (
                   <label
                     key={name}

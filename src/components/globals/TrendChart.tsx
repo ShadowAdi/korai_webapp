@@ -42,7 +42,7 @@ const TrendChart = ({
   }, [reports, selectedTrends]);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-2">
+    <div className="bg-white rounded-lg w-full shadow-sm border border-gray-200 p-6 mt-2">
       <h2 className="text-lg font-semibold text-gray-900 mb-4">
         Trends Over Time
       </h2>

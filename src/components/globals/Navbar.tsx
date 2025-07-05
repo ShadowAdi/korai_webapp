@@ -5,36 +5,29 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { BounceLoader } from "react-spinners";
 
-
 const Navbar = () => {
   const router = useRouter();
   const { user, globalLoading, logout } = useUser();
+
   return (
     <nav className="flex justify-between items-center p-6 bg-white shadow-sm">
       <div className="flex items-center space-x-2">
         <Activity className="h-8 w-8 text-indigo-600" />
         <span className="text-2xl font-bold text-gray-800">Korai Health</span>
       </div>
-      {
-        globalLoading && (
-          <BounceLoader color="#6d22e7"/>
 
-        )
-      }
-      {!globalLoading && !user ? (
+      {globalLoading ? (
+        <BounceLoader color="#6d22e7" size={32} />
+      ) : !user ? (
         <div className="space-x-4">
           <button
-            onClick={() => {
-              router.push("/login");
-            }}
+            onClick={() => router.push("/login")}
             className="px-4 py-2 cursor-pointer text-indigo-600 hover:text-indigo-800 transition-colors"
           >
             Login
           </button>
           <button
-            onClick={() => {
-              router.push("/register");
-            }}
+            onClick={() => router.push("/register")}
             className="px-6 py-2 cursor-pointer bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
           >
             Sign Up
@@ -53,10 +46,8 @@ const Navbar = () => {
             Logout
           </button>
           <button
-            onClick={() => {
-              router.push("/dashboard");
-            }}
-            className="px-6 py-2 cursor-pointer border-indigo-700 border text-indigo-700  rounded-lg  transition-colors bg-white"
+            onClick={() => router.push("/dashboard")}
+            className="px-6 py-2 cursor-pointer border-indigo-700 border text-indigo-700 rounded-lg transition-colors bg-white"
           >
             Dashboard
           </button>

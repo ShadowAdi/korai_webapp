@@ -24,7 +24,7 @@ import { BounceLoader } from "react-spinners";
 
 export default function Dashboard() {
   const router = useRouter();
-  const { getToken, globalLoading } = useUser();
+  const { getToken, globalLoading, user } = useUser();
   const [reports, setReports] = useState<ReportResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -94,6 +94,12 @@ export default function Dashboard() {
     });
     return Array.from(set);
   }, [reports]);
+
+  useEffect(() => {
+    if (!globalLoading && !loading && !user) {
+      router.push("/");
+    }
+  }, [globalLoading, loading]);
 
   return (
     <div className=" bg-gray-50 w-full">

@@ -1,7 +1,10 @@
 "use server";
 import { parseParameters } from "@/lib/parseParameter";
 import prisma from "@/lib/db";
+import jwt from "jsonwebtoken";
 import { InitializeWorker } from "@/lib/TessarectWorker";
+
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const UploadReport = async (formData: FormData) => {
   try {
@@ -26,7 +29,7 @@ export const UploadReport = async (formData: FormData) => {
       throw new Error("Uploaded file is empty");
     }
 
-    const text = await InitializeWorker(buffer); 
+    const text = await InitializeWorker(buffer);
     console.log("Extracted text:", text);
 
     const { parameters } = parseParameters(text);
@@ -41,7 +44,7 @@ export const UploadReport = async (formData: FormData) => {
           create: parameters.map((p: any) => ({
             name: p.name,
             value: p.value,
-            unit: p.unit, 
+            unit: p.unit,
             normalMin: p?.normalMin,
             normalMax: p?.normalMax,
             flagged:
@@ -57,6 +60,67 @@ export const UploadReport = async (formData: FormData) => {
     return report;
   } catch (error) {
     console.error("Error in UploadReport:", error);
-    throw error; 
+    throw error;
   }
+};
+
+export const GetAllReports = async (token: string) => {
+  const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+  const reports = await prisma.report.findMany({
+    where: {
+      userId: decoded.userId,
+    },
+    select: {
+      createdAt: true,
+      id: true,
+      name: true,
+      parameters: {
+        select: {
+          id: true,
+          name: true,
+          flagged: true,
+          normalMax: true,
+          normalMin: true,
+          unit: true,
+          value: true,
+        },
+      },
+      _count: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return reports;
+};
+
+export const GetReport = async (token: string, reportId: string) => {
+  const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+  const reports = await prisma.report.findFirst({
+    where: {
+      userId: decoded.userId,
+      id: reportId,
+    },
+    select: {
+      createdAt: true,
+      id: true,
+      name: true,
+      parameters: {
+        select: {
+          id: true,
+          name: true,
+          flagged: true,
+          normalMax: true,
+          normalMin: true,
+          unit: true,
+          value: true,
+        },
+      },
+      _count: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return reports;
 };

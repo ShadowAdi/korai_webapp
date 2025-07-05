@@ -138,7 +138,7 @@ export default function Dashboard() {
                 <div className="flex items-center space-x-4">
                   <button
                     onClick={handleUploadClick}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                    className="bg-indigo-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                   >
                     Upload New Report
                   </button>

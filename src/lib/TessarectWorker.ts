@@ -9,6 +9,10 @@ export const InitializeWorker = async (buffer: Buffer): Promise<string> => {
   try {
     console.log("Initializing Tesseract worker...");
     const worker = await createWorker("eng", 1, {
+      workerPath: path.resolve(
+        __dirname,
+        "../../node_modules/tesseract.js/src/worker-script/node/index.js"
+      ),
       logger: (m) => console.log("Tesseract log:", m),
     });
     const {

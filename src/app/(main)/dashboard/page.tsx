@@ -17,6 +17,7 @@ import {
 } from "@/utils/Dashboard";
 import { useUser } from "@/store/UserAuthProvider";
 import { useRouter } from "next/navigation";
+import TrendChart from "@/components/globals/TrendChart";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -27,6 +28,8 @@ export default function Dashboard() {
   const [selectedReport, setSelectedReport] = useState<ReportResponse | null>(
     null
   );
+  const [selectedTrends, setSelectedTrends] = useState<string[]>([]);
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filterFlagged, setFilterFlagged] = useState<boolean>(false);
   const filteredReports: ReportResponse[] = reports.filter(
@@ -48,6 +51,7 @@ export default function Dashboard() {
           },
         });
         const data = await res.json();
+
         setReports(data.reports || []);
       } catch (err) {
         console.error(err);
@@ -78,6 +82,14 @@ export default function Dashboard() {
     0
   );
   const normalParameters: number = totalParameters - flaggedParameters;
+
+  const availableParameters = React.useMemo(() => {
+    const set = new Set<string>();
+    reports.forEach((report) => {
+      report.parameters.forEach((p) => set.add(p.name));
+    });
+    return Array.from(set);
+  }, [reports]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -163,7 +175,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Search and Filter */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8 border border-gray-200">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
@@ -195,7 +206,6 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Reports List */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
               <div className="p-6 border-b border-gray-200">
@@ -342,6 +352,39 @@ export default function Dashboard() {
               </div>
             )}
           </div>
+        </div>
+        <div className="flex flex-col space-y-1 items-center my-4 mt-8">
+          <div className="flex flex-wrap gap-2">
+            {availableParameters.map((name) => (
+              <label
+                key={name}
+                className="flex items-center space-x-2 text-sm text-gray-700"
+              >
+                <input
+                  type="checkbox"
+                  value={name}
+                  checked={selectedTrends.includes(name)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedTrends((prev) => [...prev, name]);
+                    } else {
+                      setSelectedTrends((prev) =>
+                        prev.filter((item) => item !== name)
+                      );
+                    }
+                  }}
+                  className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                />
+                <span>{name}</span>
+              </label>
+            ))}
+          </div>
+
+          <TrendChart
+            reports={reports}
+            selectedTrends={selectedTrends}
+            setSelectedTrends={setSelectedTrends}
+          />
         </div>
       </div>
     </div>

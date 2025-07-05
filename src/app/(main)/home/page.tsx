@@ -87,7 +87,7 @@ const HomePage = () => {
         return;
       }
 
-      const response = await fetch("/api/reports/upload", {
+      const response = await fetch("/api/report/upload", {
         method: "POST",
         headers: {
          token

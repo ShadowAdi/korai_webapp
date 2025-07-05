@@ -46,7 +46,6 @@ const Navbar = () => {
           </button>
           <button
             onClick={() => {
-              logout();
               router.push("/dashboard");
             }}
             className="px-6 py-2 cursor-pointer border-indigo-700 border text-indigo-700  rounded-lg  transition-colors bg-white"

@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Activity } from "lucide-react";
-import { registerUser } from "./action";
 import { useRouter } from "next/navigation";
+import { registerUser } from "@/actions/UserAction";
 
 const registerSchema = z
   .object({

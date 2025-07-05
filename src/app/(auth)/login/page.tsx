@@ -4,11 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Activity } from "lucide-react";
-import React, { useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { loginUser } from "./action";
 import { useRouter } from "next/navigation";
+import { loginUser } from "@/actions/UserAction";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),

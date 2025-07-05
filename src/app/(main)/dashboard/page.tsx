@@ -18,6 +18,7 @@ import {
 import { useUser } from "@/store/UserAuthProvider";
 import { useRouter } from "next/navigation";
 import TrendChart from "@/components/globals/TrendChart";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -55,6 +56,7 @@ export default function Dashboard() {
         setReports(data.reports || []);
       } catch (err) {
         console.error(err);
+        toast.success("Failed to load reports.");
         setError("Failed to load reports.");
       } finally {
         setLoading(false);

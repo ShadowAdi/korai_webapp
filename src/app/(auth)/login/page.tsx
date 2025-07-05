@@ -8,6 +8,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -40,21 +41,22 @@ const Login = () => {
       });
 
       const resData = await response.json();
-      console.log("response ", resData);
 
       if (resData.success) {
         if (resData.token) {
+          toast.error("Login Successfull");
           localStorage.setItem("token", resData.token);
           router.push("/home");
         } else {
           console.log("Token is not there");
-          alert("Login succeeded, but token missing!");
+          toast.error("Login succeeded, but token missing!");
         }
       } else {
         console.log(`Login User Failed: ${resData.message}`);
         alert(`Login User Failed: ${resData.message}`);
       }
     } catch (error) {
+      toast.error("Login error:");
       console.error("Login error:", error);
       alert("Something went wrong. Please try again later.");
     }

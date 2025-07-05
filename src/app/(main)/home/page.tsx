@@ -7,6 +7,7 @@ import { Activity } from "lucide-react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/store/UserAuthProvider";
+import { toast } from "react-toastify";
 
 const HomePage = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const HomePage = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const { user } = useUser();
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -90,22 +91,27 @@ const HomePage = () => {
       const response = await fetch("/api/report/upload", {
         method: "POST",
         headers: {
-         token
+          token,
         },
         body: formData,
       });
 
       const resData = await response.json();
-      console.log("response", resData);
 
       if (!resData.success) {
-        setError(resData.message || "Failed to process the report. Please try again.");
+        toast.error("Failed to process the report. Please try again.");
+        setError(
+          resData.message || "Failed to process the report. Please try again."
+        );
         return;
       }
-
+      toast.success("Upload Successfull. You Can Go To Dashboard");
     } catch (err) {
-      console.error("Error in handleUpload:", err);
-      setError(err instanceof Error ? err.message : "Unexpected error occurred.");
+      toast.error("Error in handle Upload");
+      console.error("Error in handle Upload:", err);
+      setError(
+        err instanceof Error ? err.message : "Unexpected error occurred."
+      );
     } finally {
       setIsUploading(false);
     }

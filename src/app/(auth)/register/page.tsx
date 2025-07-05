@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Activity } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const registerSchema = z
   .object({
@@ -54,12 +55,15 @@ const Register = () => {
 
       if (resData.success) {
         router.push("/login");
+        toast.success("Register Successfull");
       } else {
         console.log(`Register User Failed: ${resData.message}`);
         alert(`Register User Failed: ${resData.message}`);
       }
     } catch (error) {
       console.error("Error registering user:", error);
+      toast.error("Failed to register");
+
       alert("Something went wrong. Please try again later.");
     }
   };
@@ -154,7 +158,7 @@ const Register = () => {
             onClick={() => {
               router.push("/");
             }}
-            className="mt-4 text-gray-500 hover:text-gray-700 text-sm"
+            className="mt-4 text-gray-500  hover:text-gray-700 text-sm"
           >
             ← Back to Home
           </button>

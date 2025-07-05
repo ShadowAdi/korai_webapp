@@ -3,6 +3,8 @@ import { useUser } from "@/store/UserAuthProvider";
 import { Activity } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { BounceLoader } from "react-spinners";
+
 
 const Navbar = () => {
   const router = useRouter();
@@ -13,6 +15,12 @@ const Navbar = () => {
         <Activity className="h-8 w-8 text-indigo-600" />
         <span className="text-2xl font-bold text-gray-800">Korai Health</span>
       </div>
+      {
+        globalLoading && (
+          <BounceLoader color="#6d22e7"/>
+
+        )
+      }
       {!globalLoading && !user ? (
         <div className="space-x-4">
           <button

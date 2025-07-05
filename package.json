@@ -20,13 +20,12 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.525.0",
     "next": "15.3.4",
-    "pdf2pic": "^3.2.0",
     "prisma": "^6.11.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.59.0",
     "tailwind-merge": "^3.3.1",
-    "tesseract.js": "^5.1.1",
+    "tesseract.js": "^6.0.1",
     "zod": "^3.25.67"
   },
   "devDependencies": {

@@ -7,6 +7,7 @@ import { Activity } from "lucide-react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/store/UserAuthProvider";
+import { UploadReport } from "@/actions/ReportAction";
 
 const HomePage = () => {
   const router = useRouter();
@@ -22,8 +23,16 @@ const HomePage = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
-      if (!selectedFile.type.startsWith("image/")) {
-        setError("Please upload an image file (e.g., PNG, JPEG).");
+      const supportedFormats = [
+        "image/png",
+        "image/jpeg",
+        "image/bmp",
+        "image/webp",
+      ];
+      if (!supportedFormats.includes(selectedFile.type)) {
+        setError(
+          "Please upload a supported image file (PNG, JPEG, BMP, WebP)."
+        );
         setFile(null);
         setPreview(null);
         return;
@@ -73,10 +82,17 @@ const HomePage = () => {
       formData.append("name", name);
       formData.append("userId", user.id);
 
-     
+      const response = await UploadReport(formData);
+      if (!response) {
+        setError("Failed to process the report. Please try again.");
+        return;
+      }
+      console.log("respojnse ",response)
     } catch (err) {
-      console.error(err);
-      setError("Unexpected error occurred.");
+      console.error("Error in handleUpload:", err);
+      setError(
+        err instanceof Error ? err.message : "Unexpected error occurred."
+      );
     } finally {
       setIsUploading(false);
     }
@@ -129,7 +145,7 @@ const HomePage = () => {
           <Button
             onClick={handleUpload}
             disabled={!file || isUploading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 cursor-pointer"
           >
             {isUploading ? "Uploading..." : "Upload Report"}
           </Button>

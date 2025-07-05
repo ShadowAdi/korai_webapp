@@ -1,41 +1,32 @@
 export function parseParameters(text: string) {
   const lines = text
     .split("\n")
-    .map((line) => line.trim())
+    .map((l) => l.trim())
     .filter(Boolean);
-  const result: {
-    name: string;
-    value: number;
-    unit: string;
-    normalMin?: number;
-    normalMax?: number;
-  }[] = [];
-
-  const regex = /^([\w\s\(\)\-]+)\s+([\d.]+)\s+(\w+\/?\w*)\s+([\d.–<>\-]+)?$/;
+  let patientName = "";
+  let date = "";
+  const parameters = [];
 
   for (const line of lines) {
-    const match = line.match(regex);
-    if (match) {
-      const [, name, valueStr, unit, range] = match;
-      let normalMin, normalMax;
-      if (range) {
-        const nums = range.match(/[\d.]+/g)?.map(Number) ?? [];
-        if (nums.length === 2) {
-          [normalMin, normalMax] = nums;
-        } else if (range.includes("<")) {
-          normalMax = nums[0];
-        } else if (range.includes(">")) {
-          normalMin = nums[0];
-        }
+    if (line.startsWith("Patient Name:")) {
+      patientName = line.split(":")[1].trim();
+    } else if (line.startsWith("Date:")) {
+      date = line.split(":")[1].trim();
+    } else {
+      const match = line.match(
+        /^(.*?):\s*([\d.]+)\s*(\w+\/\w+).*?(\d+)[^0-9]*(\d+)?/
+      );
+      if (match) {
+        const [, name, valueStr, unit, minStr, maxStr] = match;
+        parameters.push({
+          name: name.trim(),
+          value: parseFloat(valueStr),
+          unit: unit.trim(),
+          normalMin: minStr ? parseFloat(minStr) : null,
+          normalMax: maxStr ? parseFloat(maxStr) : null,
+        });
       }
-      result.push({
-        name: name.trim(),
-        value: parseFloat(valueStr),
-        unit,
-        normalMin,
-        normalMax,
-      });
     }
   }
-  return result;
+  return { patientName, date, parameters };
 }

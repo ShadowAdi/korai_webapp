@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/store/UserAuthProvider";
 import { toast } from "react-toastify";
+import { BounceLoader } from "react-spinners";
 
 const HomePage = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const HomePage = () => {
   const [error, setError] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
-  const { user } = useUser();
+  const { user, globalLoading } = useUser();
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -117,8 +118,20 @@ const HomePage = () => {
     }
   };
 
+  if (globalLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <BounceLoader color="#6d22e7" />
+      </div>
+    );
+  }
+
+  if (!globalLoading && !user) {
+    router.push("/login")
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
+    <div className="flex-1 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <Activity className="h-12 w-12 text-indigo-600 mx-auto mb-4" />

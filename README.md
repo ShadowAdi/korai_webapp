@@ -2,8 +2,9 @@
 
 A simple, functional web app where users can upload lab report images and instantly see health parameters extracted into a clean, interactive dashboard.Built for the Korai Health assignment — focused on usability, clean design, and real-world workflows.
 
-Live demo: https://korai-webapp.vercel.app
-Repository: https://github.com/ShadowAdi/korai_webapp
+Live demo: [https://korai-webapp.vercel.app](https://korai-webapp.vercel.app/)
+
+Repository: [https://github.com/ShadowAdi/korai_webapp](https://github.com/ShadowAdi/korai_webapp)
 
 ✨ Features
 

@@ -7,8 +7,7 @@ import React, {
   useEffect,
   type ReactNode,
 } from "react";
-import { User } from "@/types/UserType";
-import { fetchUserByToken } from "@/actions/UserAction";
+import { User } from "@/types/Types";
 
 type UserContextType = {
   user: User | null;
@@ -47,8 +46,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const response = await fetchUserByToken(token);
-      const user=response
+      const res = await fetch("/api/auth/getUserByToken", {
+        method: "GET",
+        headers: { token },
+      });
+      const user = await res.json();
       if (user) {
         setUser(user);
       } else {
@@ -61,7 +63,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       setGlobalLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchUser();

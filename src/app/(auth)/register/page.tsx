@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Activity } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { registerUser } from "@/actions/UserAction";
 
 const registerSchema = z
   .object({
@@ -42,13 +41,26 @@ const Register = () => {
   const router = useRouter();
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-    const response = await registerUser(data);
-    const { success } = response;
-    if (success) {
-      router.push("/login");
-    } else {
-      console.log(`Register User Failed: ${response.message}`);
-      alert(`Register User Failed: ${response.message}`);
+    try {
+      const response = await fetch(`/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const resData = await response.json();
+
+      if (resData.success) {
+        router.push("/login");
+      } else {
+        console.log(`Register User Failed: ${resData.message}`);
+        alert(`Register User Failed: ${resData.message}`);
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+      alert("Something went wrong. Please try again later.");
     }
   };
 

@@ -18,8 +18,26 @@ export interface Report {
   userId: string;
   user: User;
   name: string;
-  createdAt: Date;
-  parameters: Parameters[];
+  createdAt: String;
+  parameters: ParametersResponse[];
+}
+
+export interface ReportResponse {
+  id: string;
+  name: string;
+  createdAt: string;
+  parameters: ParametersResponse[];
+  _count: { parameters: number };
+}
+
+export interface ParametersResponse {
+  id: string;
+  name: string;
+  value: number;
+  unit: string;
+  normalMin?: number | null;
+  normalMax?: number | null;
+  flagged: boolean;
 }
 
 export interface Parameters {
@@ -33,3 +51,4 @@ export interface Parameters {
   normalMax?: number | null;
   flagged: boolean;
 }
+

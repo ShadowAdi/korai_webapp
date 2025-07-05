@@ -8,7 +8,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/actions/UserAction";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -31,19 +30,33 @@ const Login = () => {
   const router = useRouter();
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const response = await loginUser(data);
-    console.log("response ",response)
-    const { success } = response;
-    if (success) {
-      if (response.token) {
-        localStorage.setItem("token", response.token!);
-        router.push("/login");
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const resData = await response.json();
+      console.log("response ", resData);
+
+      if (resData.success) {
+        if (resData.token) {
+          localStorage.setItem("token", resData.token);
+          router.push("/home");
+        } else {
+          console.log("Token is not there");
+          alert("Login succeeded, but token missing!");
+        }
       } else {
-        console.log("Token is not there");
+        console.log(`Login User Failed: ${resData.message}`);
+        alert(`Login User Failed: ${resData.message}`);
       }
-    } else {
-      console.log(`Login User Failed: ${response.message}`);
-      alert(`Login User Failed: ${response.message}`);
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again later.");
     }
   };
 

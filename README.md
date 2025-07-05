@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🧪 Korai Health Web App
 
-## Getting Started
+A simple, functional web app where users can upload lab report images and instantly see health parameters extracted into a clean, interactive dashboard.Built for the Korai Health assignment — focused on usability, clean design, and real-world workflows.
 
-First, run the development server:
+Live demo: https://korai-webapp.vercel.app
+Repository: https://github.com/ShadowAdi/korai_webapp
 
-```bash
+✨ Features
+
+Smooth, user-friendly image upload (no PDF support yet)
+
+OCR text extraction using Tesseract.js
+
+Clean, responsive dashboard built with Tailwind CSS
+
+View, query, and filter extracted health parameters
+
+Simple auth flow: register, login, logout
+
+Protected routes: only logged-in users can upload or see dashboard
+
+Toast notifications, loading states, and clear UX
+
+Data stored securely using Prisma & Neon (PostgreSQL)
+
+Bonus: basic trends and flagging abnormal values
+
+🛠 Tech Stack
+
+Next.js (App Router + API routes)
+
+Tailwind CSS for styling
+
+Prisma ORM & Neon for database
+
+Tesseract.js for OCR
+
+React Hook Form + Zod for form validation
+
+React Toastify & React Spinners for UX
+
+JWT & bcrypt for authentication
+
+Recharts for trends visualization
+
+📦 Install & Run Locally
+
+```
+# Clone the repo
+git clone https://github.com/ShadowAdi/korai_webapp
+cd korai_webapp
+
+# Install dependencies
+npm install
+
+# Set environment variables
+# (See .env.example if provided)
+
+# Push schema & start dev server
+npx prisma db push
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+⚙️ Next Steps & Improvements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Add PDF upload support
 
-## Learn More
+Improve OCR accuracy (possible Google Vision integration)
 
-To learn more about Next.js, take a look at the following resources:
+More advanced AI insights
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Better user roles & permissions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Mobile UX polish
 
-## Deploy on Vercel
+🙏 Thanks
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Built as part of the Korai Health assignment to demonstrate:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Practical problem solving
+
+Modern full-stack development (frontend + backend)
+
+Clean code, security, and good UX

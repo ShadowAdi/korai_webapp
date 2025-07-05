@@ -16,10 +16,10 @@ export async function POST(req: Request) {
     });
 
     if (existingUser) {
-      return {
-        success: false,
-        message: "A user with this email already exists.",
-      };
+       return NextResponse.json(
+    { success: false, message: "A user with this email already exists." },
+    { status: 409 }
+  );
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useUser } from "@/store/UserAuthProvider";
+import { BounceLoader } from "react-spinners";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -29,6 +31,7 @@ const Login = () => {
   });
 
   const router = useRouter();
+  const { globalLoading, user } = useUser();
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
@@ -61,6 +64,20 @@ const Login = () => {
       alert("Something went wrong. Please try again later.");
     }
   };
+
+  if (globalLoading) {
+    return (
+      <div className="flex-1 min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <BounceLoader color="#6d22e7" />
+      </div>
+    );
+  }
+
+  React.useEffect(() => {
+    if (user) {
+      router.push("/home");
+    }
+  }, [user, router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
